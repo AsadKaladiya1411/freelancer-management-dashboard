@@ -17,7 +17,7 @@ function Login() {
     setIsLoading(true);
 
     try {
-      const res = await api.post("/login", { email, password });
+      const res = await api.post("/auth/login", { email, password });
 
       // SAVE USER ID
       localStorage.setItem("token", res.data.token);
