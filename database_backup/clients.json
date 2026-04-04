@@ -1,0 +1,19 @@
+[{
+  "_id": {
+    "$oid": "69901676b582dfc5f1d7fc21"
+  },
+  "user_id": {
+    "$oid": "698f2382cafd2def75ba024d"
+  },
+  "name": "ABC Company",
+  "email": "abc@gmail.com",
+  "phone": "9876543210",
+  "company": "ABC Pvt Ltd",
+  "createdAt": {
+    "$date": "2026-02-14T06:30:14.924Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-14T06:30:14.924Z"
+  },
+  "__v": 0
+}]

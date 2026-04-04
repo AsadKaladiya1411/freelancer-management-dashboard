@@ -1,0 +1,24 @@
+[{
+  "_id": {
+    "$oid": "69901949fb92a423e1533f74"
+  },
+  "user_id": {
+    "$oid": "698f2382cafd2def75ba024d"
+  },
+  "client_id": {
+    "$oid": "69901676b582dfc5f1d7fc21"
+  },
+  "title": "Website Development",
+  "budget": 15000,
+  "deadline": {
+    "$date": "2026-02-20T00:00:00.000Z"
+  },
+  "status": "Pending",
+  "createdAt": {
+    "$date": "2026-02-14T06:42:17.279Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-14T06:42:17.279Z"
+  },
+  "__v": 0
+}]
