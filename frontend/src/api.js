@@ -2,8 +2,8 @@ import axios from "axios";
 
 const defaultBaseURL = process.env.REACT_APP_API_BASE_URL || (
   process.env.NODE_ENV === "production"
-    ? "/api"
-    : "https://freelancer-management-dashboard.onrender.com/api"
+    ? "https://freelancer-management-dashboard.onrender.com/api"
+    : "http://localhost:5000/api"
 );
 
 export const clearAuthStorage = () => {

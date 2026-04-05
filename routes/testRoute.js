@@ -31,40 +31,42 @@ const {
 // Auth routes
 router.post('/register', registerUser);
 router.post('/login', loginUser);
-
-router.use(authMiddleware);
+router.post('/auth/login', loginUser);
+router.get('/health', (req, res) => {
+    return res.status(200).json({ status: 'ok' });
+});
 
 // Client routes
-router.post('/clients', addClient);
-router.get('/clients', getClients);
-router.get('/clients/:id', getClient);
-router.put('/clients/:id', updateClient);
-router.delete('/clients/:id', deleteClient);
+router.post('/clients', authMiddleware, addClient);
+router.get('/clients', authMiddleware, getClients);
+router.get('/clients/:id', authMiddleware, getClient);
+router.put('/clients/:id', authMiddleware, updateClient);
+router.delete('/clients/:id', authMiddleware, deleteClient);
 
 // Project routes
-router.post('/projects', addProject);
-router.get('/projects', getProjects);
-router.get('/projects/:id', getProject);
-router.put('/projects/:id', updateProject);
-router.delete('/projects/:id', deleteProject);
+router.post('/projects', authMiddleware, addProject);
+router.get('/projects', authMiddleware, getProjects);
+router.get('/projects/:id', authMiddleware, getProject);
+router.put('/projects/:id', authMiddleware, updateProject);
+router.delete('/projects/:id', authMiddleware, deleteProject);
 
 // Payment routes
-router.post('/payments', addPayment);
-router.get('/payments', getPayments);
-router.get('/payments/:id', getPayment);
-router.put('/payments/:id', updatePayment);
-router.delete('/payments/:id', deletePayment);
+router.post('/payments', authMiddleware, addPayment);
+router.get('/payments', authMiddleware, getPayments);
+router.get('/payments/:id', authMiddleware, getPayment);
+router.put('/payments/:id', authMiddleware, updatePayment);
+router.delete('/payments/:id', authMiddleware, deletePayment);
 
 // Analytics routes
-router.get('/analytics/total', getTotalEarnings);
-router.get('/analytics/monthly', getMonthlyEarnings);
-router.get('/analytics/client-wise', getClientWiseEarnings);
-router.get('/analytics/project-status', getProjectStatusSummary);
+router.get('/analytics/total', authMiddleware, getTotalEarnings);
+router.get('/analytics/monthly', authMiddleware, getMonthlyEarnings);
+router.get('/analytics/client-wise', authMiddleware, getClientWiseEarnings);
+router.get('/analytics/project-status', authMiddleware, getProjectStatusSummary);
 
 // Dashboard route
-router.get('/dashboard', getDashboardData);
+router.get('/dashboard', authMiddleware, getDashboardData);
 
 // Test route
-router.get('/test', testMessage);
+router.get('/test', authMiddleware, testMessage);
 
 module.exports = router;
