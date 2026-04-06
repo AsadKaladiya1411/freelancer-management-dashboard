@@ -30,7 +30,7 @@ function Register() {
     setIsLoading(true);
 
     try {
-      await api.post("/register", form);
+      await api.post("/auth/register", form);
 
       setIsLoading(false);
 
@@ -39,7 +39,7 @@ function Register() {
 
     } catch (err) {
       setIsLoading(false);
-      setError(err.response?.data?.message || "Registration failed. Please try again.");
+      setError(err.message || "Registration failed. Please try again.");
     }
   };
 

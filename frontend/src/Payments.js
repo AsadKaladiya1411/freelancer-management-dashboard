@@ -27,10 +27,10 @@ function Payments() {
     setError("");
     try {
       const res = await api.get("/payments");
-      setPayments(res.data.payments);
+      setPayments(Array.isArray(res.data?.payments) ? res.data.payments : []);
     } catch (err) {
       console.log("Error fetching payments:", err);
-      setError("Failed to load payments. Please try again.");
+      setError(err.message || "Failed to load payments. Please try again.");
     }
     setLoading(false);
   }, []);
@@ -38,10 +38,10 @@ function Payments() {
   const fetchProjects = useCallback(async () => {
     try {
       const res = await api.get("/projects");
-      setProjects(res.data.projects);
+      setProjects(Array.isArray(res.data?.projects) ? res.data.projects : []);
     } catch (err) {
       console.log("Error fetching projects:", err);
-      setError("Failed to load project options.");
+      setError(err.message || "Failed to load project options.");
     }
   }, []);
 
@@ -82,8 +82,8 @@ function Payments() {
         fetchPayments();
       } catch (err) {
         console.log("Error deleting payment:", err);
-        setError("Failed to delete payment. Please try again.");
-        alert("Failed to delete payment");
+        setError(err.message || "Failed to delete payment. Please try again.");
+        alert(err.message || "Failed to delete payment");
       }
     }
   };
@@ -111,8 +111,8 @@ function Payments() {
       fetchPayments();
     } catch (err) {
       console.log("Error saving payment:", err);
-      setError("Failed to save payment. Please try again.");
-      alert("Failed to save payment");
+      setError(err.message || "Failed to save payment. Please try again.");
+      alert(err.message || "Failed to save payment");
     }
   };
 

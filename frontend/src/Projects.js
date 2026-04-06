@@ -29,10 +29,10 @@ function Projects() {
     setError("");
     try {
       const res = await api.get("/projects");
-      setProjects(res.data.projects);
+      setProjects(Array.isArray(res.data?.projects) ? res.data.projects : []);
     } catch (err) {
       console.log("Error fetching projects:", err);
-      setError("Failed to load projects. Please try again.");
+      setError(err.message || "Failed to load projects. Please try again.");
     }
     setLoading(false);
   }, []);
@@ -40,10 +40,10 @@ function Projects() {
   const fetchClients = useCallback(async () => {
     try {
       const res = await api.get("/clients");
-      setClients(res.data.clients);
+      setClients(Array.isArray(res.data?.clients) ? res.data.clients : []);
     } catch (err) {
       console.log("Error fetching clients:", err);
-      setError("Failed to load client options.");
+      setError(err.message || "Failed to load client options.");
     }
   }, []);
 
@@ -88,8 +88,8 @@ function Projects() {
         fetchProjects();
       } catch (err) {
         console.log("Error deleting project:", err);
-        setError("Failed to delete project. Please try again.");
-        alert("Failed to delete project");
+        setError(err.message || "Failed to delete project. Please try again.");
+        alert(err.message || "Failed to delete project");
       }
     }
   };
@@ -117,8 +117,8 @@ function Projects() {
       fetchProjects();
     } catch (err) {
       console.log("Error saving project:", err);
-      setError("Failed to save project. Please try again.");
-      alert("Failed to save project");
+      setError(err.message || "Failed to save project. Please try again.");
+      alert(err.message || "Failed to save project");
     }
   };
 

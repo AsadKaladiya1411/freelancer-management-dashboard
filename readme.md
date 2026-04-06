@@ -87,6 +87,7 @@ asadproject/
     db.js
   controllers/
     testController.js
+  app.js
   middleware/
     authMiddleware.js
   models/
@@ -157,6 +158,8 @@ Set values in .env:
 - JWT_SECRET
 - JWT_EXPIRES_IN
 - CLIENT_URL
+- CLIENT_URLS
+- NODE_ENV
 
 Optional frontend env for local development:
 
@@ -204,6 +207,11 @@ App: http://localhost:5000
 Base URL: /api
 
 ### Public
+
+- POST /auth/register
+- POST /auth/login
+
+Legacy compatibility aliases:
 
 - POST /register
 - POST /login
@@ -255,10 +263,20 @@ Use the complete deployment steps in DEPLOYMENT_GUIDE.md.
 
 Quick summary:
 
-1. Set production environment variables
-2. Run npm run build
-3. Start with npm start
-4. Deploy on Render or Railway using root project directory
+1. Deploy backend to Render from the root project.
+2. Set backend env vars in Render:
+  - PORT=10000 (or leave default Render value)
+  - NODE_ENV=production
+  - MONGODB_URI=<MongoDB Atlas URI>
+  - JWT_SECRET=<long random secret>
+  - JWT_EXPIRES_IN=7d
+  - CLIENT_URL=https://your-frontend.vercel.app
+  - CLIENT_URLS=http://localhost:3000,https://your-frontend.vercel.app,https://*.vercel.app
+3. Deploy frontend to Vercel from the frontend directory.
+4. Set frontend env var in Vercel:
+  - REACT_APP_API_BASE_URL=https://your-backend-name.onrender.com/api
+5. Confirm health check:
+  - GET https://your-backend-name.onrender.com/api/health
 
 ## Screenshots
 

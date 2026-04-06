@@ -1,10 +1,18 @@
 import axios from "axios";
 
-const defaultBaseURL = process.env.REACT_APP_API_BASE_URL || (
-  process.env.NODE_ENV === "production"
-    ? "https://freelancer-management-dashboard.onrender.com/api"
-    : "http://localhost:5000/api"
-);
+const resolveApiBaseURL = () => {
+  if (process.env.REACT_APP_API_BASE_URL) {
+    return process.env.REACT_APP_API_BASE_URL;
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    return "https://freelancer-management-dashboard.onrender.com/api";
+  }
+
+  return "http://localhost:5000/api";
+};
+
+const defaultBaseURL = resolveApiBaseURL();
 
 export const clearAuthStorage = () => {
   localStorage.removeItem("token");
@@ -13,7 +21,8 @@ export const clearAuthStorage = () => {
 };
 
 const api = axios.create({
-  baseURL: defaultBaseURL
+  baseURL: defaultBaseURL,
+  timeout: 20000
 });
 
 api.interceptors.request.use((config) => {
@@ -29,6 +38,15 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    const normalizedError = {
+      status: error.response?.status,
+      message:
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong while calling the API.",
+      details: error.response?.data || null
+    };
+
     if (error.response?.status === 401) {
       clearAuthStorage();
 
@@ -37,7 +55,7 @@ api.interceptors.response.use(
       }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(normalizedError);
   }
 );
 

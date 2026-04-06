@@ -88,7 +88,15 @@ const registerUser = async (req, res) => {
     });
 
     res.status(201).json({
+      success: true,
       message: "User registered successfully",
+      data: {
+        user: {
+          _id: newUser._id,
+          name: newUser.name,
+          email: newUser.email
+        }
+      },
       user: {
         _id: newUser._id,
         name: newUser.name,
@@ -132,16 +140,23 @@ const loginUser = async (req, res) => {
 
     const token = createToken(user._id.toString());
 
+    const userPayload = {
+      _id: user._id,
+      name: user.name,
+      email: user.email
+    };
+
     res.json({
+      success: true,
       message: "Login successful",
+      data: {
+        token,
+        user: userPayload
+      },
       token,
       userId: user._id,
       name: user.name,
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email
-      }
+      user: userPayload
     });
 
   } catch (error) {

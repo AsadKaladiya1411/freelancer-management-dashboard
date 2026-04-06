@@ -9,10 +9,12 @@ const connectDB = async () => {
 
   try {
     await mongoose.connect(mongoUri, {
-      // Modern connection tuning for cloud-hosted MongoDB.
-      serverSelectionTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 15000,
       socketTimeoutMS: 45000,
       maxPoolSize: 10,
+      minPoolSize: 1,
+      autoIndex: process.env.NODE_ENV !== 'production',
+      retryWrites: true,
     });
 
     console.log(`MongoDB connected successfully: ${mongoose.connection.host}`);

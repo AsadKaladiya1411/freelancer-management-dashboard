@@ -50,11 +50,11 @@ function Dashboard() {
           api.get("/analytics/project-status")
         ]);
 
-        setData(dashboardResponse.data);
-        setProjectStatusSummary(projectStatusResponse.data);
+        setData(dashboardResponse.data || {});
+        setProjectStatusSummary(projectStatusResponse.data || {});
       } catch (err) {
         console.log("Dashboard Error:", err);
-        setError("Failed to load dashboard data. Please refresh and try again.");
+        setError(err.message || "Failed to load dashboard data. Please refresh and try again.");
       } finally {
         setLoading(false);
       }
@@ -87,12 +87,15 @@ function Dashboard() {
 
   const getCardStyle = (index) => hoveredCard === index ? cardHover : cardStyle;
 
-  const monthlyChartData = data?.monthlyEarnings ? {
-    labels: data.monthlyEarnings.map(m => `${m._id.month}/${m._id.year}`),
+  const monthlyEarnings = Array.isArray(data?.monthlyEarnings) ? data.monthlyEarnings : [];
+  const clientWiseEarnings = Array.isArray(data?.clientWiseEarnings) ? data.clientWiseEarnings : [];
+
+  const monthlyChartData = monthlyEarnings.length > 0 ? {
+    labels: monthlyEarnings.map((m) => `${m._id.month}/${m._id.year}`),
     datasets: [
       {
         label: "Monthly Earnings",
-        data: data.monthlyEarnings.map(m => m.total),
+        data: monthlyEarnings.map((m) => m.total),
         borderColor: "#667eea",
         backgroundColor: "rgba(102, 126, 234, 0.1)",
         borderWidth: 3,
@@ -106,12 +109,12 @@ function Dashboard() {
     ]
   } : null;
 
-  const clientChartData = data?.clientWiseEarnings ? {
-    labels: data.clientWiseEarnings.map(c => c.clientName),
+  const clientChartData = clientWiseEarnings.length > 0 ? {
+    labels: clientWiseEarnings.map((c) => c.clientName),
     datasets: [
       {
         label: "Client Wise Earnings",
-        data: data.clientWiseEarnings.map(c => c.total),
+        data: clientWiseEarnings.map((c) => c.total),
         backgroundColor: [
           "#667eea",
           "#764ba2",

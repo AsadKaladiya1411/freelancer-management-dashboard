@@ -27,10 +27,10 @@ function Clients() {
     setError("");
     try {
       const res = await api.get("/clients");
-      setClients(res.data.clients);
+      setClients(Array.isArray(res.data?.clients) ? res.data.clients : []);
     } catch (err) {
       console.log("Error fetching clients:", err);
-      setError("Failed to load clients. Please try again.");
+      setError(err.message || "Failed to load clients. Please try again.");
     }
     setLoading(false);
   }, []);
@@ -68,8 +68,8 @@ function Clients() {
         fetchClients();
       } catch (err) {
         console.log("Error deleting client:", err);
-        setError("Failed to delete client. Please try again.");
-        alert("Failed to delete client");
+        setError(err.message || "Failed to delete client. Please try again.");
+        alert(err.message || "Failed to delete client");
       }
     }
   };
@@ -97,8 +97,8 @@ function Clients() {
       fetchClients();
     } catch (err) {
       console.log("Error saving client:", err);
-      setError("Failed to save client. Please try again.");
-      alert("Failed to save client");
+      setError(err.message || "Failed to save client. Please try again.");
+      alert(err.message || "Failed to save client");
     }
   };
 

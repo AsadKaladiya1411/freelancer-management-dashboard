@@ -29,9 +29,13 @@ const {
 } = require('../controllers/testController');
 
 // Auth routes
+router.post('/auth/login', loginUser);
+router.post('/auth/register', registerUser);
+
+// Temporary aliases for backward compatibility
 router.post('/register', registerUser);
 router.post('/login', loginUser);
-router.post('/auth/login', loginUser);
+
 router.get('/health', (req, res) => {
     return res.status(200).json({ status: 'ok' });
 });

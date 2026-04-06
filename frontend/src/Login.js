@@ -18,11 +18,17 @@ function Login() {
 
     try {
       const res = await api.post("/auth/login", { email, password });
+      const token = res.data?.data?.token || res.data?.token;
+      const user = res.data?.data?.user || res.data?.user;
+      const userId = user?._id || res.data?.userId;
 
-      // SAVE USER ID
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("userId", res.data.user?._id || res.data.userId);
-      localStorage.setItem("userName", res.data.user?.name || res.data.name || "Admin User");
+      if (!token || !userId) {
+        throw new Error("Invalid login response from server.");
+      }
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("userName", user?.name || res.data?.name || "Admin User");
 
       // Show success message
       setIsLoading(false);
@@ -32,7 +38,7 @@ function Login() {
 
     } catch (err) {
       setIsLoading(false);
-      setError(err.response?.data?.message || "Login failed. Please try again.");
+      setError(err.message || "Login failed. Please try again.");
     }
   };
 
