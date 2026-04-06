@@ -1,20 +1,24 @@
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
-  const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/freelancer_db';
+  const mongoUri = process.env.MONGODB_URI;
 
-  if (process.env.NODE_ENV === 'production' && !process.env.MONGODB_URI) {
-    console.error('MONGODB_URI is required in production environment');
-    process.exit(1);
+  if (!mongoUri) {
+    throw new Error('MONGODB_URI is not set. Please configure it in your environment variables.');
   }
 
   try {
-    await mongoose.connect(mongoUri);
+    await mongoose.connect(mongoUri, {
+      // Modern connection tuning for cloud-hosted MongoDB.
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+      maxPoolSize: 10,
+    });
 
-    console.log('MongoDB connected successfully');
+    console.log(`MongoDB connected successfully: ${mongoose.connection.host}`);
   } catch (error) {
-    console.error('Database connection error:', error);
-    process.exit(1);
+    console.error('MongoDB connection error:', error.message);
+    throw error;
   }
 };
 
